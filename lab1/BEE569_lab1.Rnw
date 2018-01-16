@@ -1,0 +1,120 @@
+
+\documentclass[11]{article}
+\usepackage{indentfirst}
+
+
+\begin{document}
+
+
+\begin{flushleft}
+
+Roy Nunez\\
+Bayesian Data Analysis\\
+Lab \#1\\
+<<>>=
+#plotting function and required R libraries
+library("gridExtra")
+library("ggplot2")
+makeplot<-function(varx,vary){
+  hist_top <- ggplot()+geom_histogram(aes(varx),binwidth = 1) 
+  empty<-ggplot()+geom_point(aes(1,1), colour="blue")
+  scatter <- ggplot()+geom_point(aes(varx, vary)) 
+  hist_right <- ggplot()+geom_histogram(aes(vary),binwidth = 1)+coord_flip()
+  grid.arrange(hist_top, empty, scatter, hist_right, ncol=2, nrow=2, widths=c(4, 1), heights=c(1, 4))
+}
+@
+
+
+\vspace{ 6  mm} 
+Question \#1
+
+The probability density function of (x,y) is 
+
+$f(x,y) =6/(x^4,y^4), 1 \geq x, y \leq \infty$\\
+
+
+
+
+Question \#2
+
+
+$p(x,\,\leq\,y)$
+
+$\displaystyle{=\int_R f(x,y) dxdy}$\\
+$\displaystyle{=\int_x   \hspace{4 mm}  6/(y^3,y^4)dxdy}$\\
+
+$\displaystyle{=\int_1^\infty \int_1^y dx/x^3}y^4dy$\\
+
+$\displaystyle{= 6 \int_1^\infty \hspace{ 2 mm} (-1/2x^2) y^-4 dy}$\\	
+
+\vspace{ 3 mm} 
+$=6 \int1^\infty (-1/2y^2) + 1/2 y^-4) dy$\\
+$=6 \int_1^\infty(-1/2 y^-6 + \frac{1}{2} y ^{-4} $\\
+
+$=6(-\frac{1}{2} \frac{y^{-5}}{-3} + \frac{1}{2} \frac{y^{-3}}{-3})$\\
+$=6(\frac{1}{10y^5} -\frac{1}{6y^3})$\\
+$=6[0 - (\frac{1}{10} - \frac{1}{6}]$\\
+$=6[\frac{1}{6} - \frac{1}{10}]$\\
+$=1-\frac{6}{10}$\\
+$=1 - \frac{3}{5}$\\
+$=\frac{2}{5}$\\
+
+Question \#3\\
+1. Case \#1\\
+$f(x,y) = \frac{1}{144}, \hspace{4 mm} 
+-6\leq x \leq 6 \hspace{8 mm} -6 \leq y \leq 6$
+\vspace{3 mm}\\
+
+<<>>=
+
+
+
+x<-seq(1,1000)
+y<-seq(1,1000)
+pointx=runif(x,-6,6)
+pointy=runif(y,-6,6)
+makeplot(pointx,pointy)
+@
+
+
+2. Case \#2\\
+
+$ P(X=x | Y=y) = \hspace{4 mm} f_{y}(x) \hspace{4 mm} = \frac{1}{12} , -6 \leq x \leq 6$  
+<<>>=
+vecx<-vector();vecy<-vector();points<-0
+while(points< 1000){
+  tempx<-runif(1, -6,6)
+  tempy<-runif(1, -6,6)
+  if (tempx > tempy){
+    vecx<-append(vecx, tempx)
+    vecy<-append(vecy,tempy)
+   points<- points +1 
+  }
+}
+makeplot(vecx,vecy)
+@
+
+\vspace{3 mm}
+3.Case \#3\\
+$P(Y=y | X=x) = f_{x}(y) \frac{1}{12}, \hspace{4 mm} -6 \leq y \leq 6$\\
+<<>>=
+vecx<-vector();vecy<-vector();points<-0
+while(points< 1000){
+  tempx<-runif(1, -6,6)
+  tempy<-runif(1, -6,6)
+  if (tempx**2 + tempy**2 <= 36){
+    vecx<-append(vecx, tempx)
+    vecy<-append(vecy,tempy)
+    points<- points +1 
+  }
+}
+makeplot(vecx,vecy)
+@
+
+\end{flushleft}\
+\end{document}
+
+
+
+
+
